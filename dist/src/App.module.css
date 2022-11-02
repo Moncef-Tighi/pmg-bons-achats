@@ -39,3 +39,40 @@
     padding: 10px;
     margin-bottom: 10px;
 }
+
+
+
+
+.modalBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 35vw;
+    min-height: 60%;
+    background-color: white;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form {
+    width: 75%;
+    display: flex;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 800px) {
+    .modalBox {
+        min-width: 60vw;
+    }
+}
+ 
+@media only screen and (max-width: 600px) {
+    .modalBox {
+        min-width: 90vw;
+    }
+}
