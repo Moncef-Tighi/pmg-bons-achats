@@ -3,15 +3,17 @@ import theme  from "./theme"
 import classes from './App.module.css'
 import TableCustom from "./Table/TableCustom"
 import TableHeadCustom from "./Table/TableHeadCustom"
-import { TableBody,TableRow, TableCell, Button } from "@mui/material"
+import { TableBody,TableRow, TableCell, Button, TextField } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
 import { useState } from "react";
 import { MenuItem, InputLabel } from "@mui/material";
 import { useForm } from 'react-hook-form';
 import CustomInput from "./util/CustomInput";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
 const bons = [
   {
@@ -190,6 +192,16 @@ const App = function() {
                             min: {value: 1,message: 'Le montant doit être supérieur à zéro'},
                         }}
                     />
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                      <DesktopDatePicker
+                        label="Date d'Expiration"
+                        inputFormat="DD/MM/YYYY"
+                        // value={value}
+                        // onChange={handleChange}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+
                     <Button color="primary" variant="contained" 
                     size="large" sx={ {marginTop: "20px"}} type="submit"
                     onClick={handleOpen}
