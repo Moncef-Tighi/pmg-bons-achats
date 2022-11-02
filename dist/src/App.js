@@ -63,17 +63,18 @@ const bons = [
 const App = function() {
 
   const [openModal, setOpenModal] = useState(false);
-  console.log(openModal);
   const handleOpen = () => setOpenModal(true);
   const handleClose = () => setOpenModal(false);
+
   const { handleSubmit, control, formState: { errors } } = useForm();
-  const [typeTransaction, setTypeTransaction] = useState("cib");
-  const changeTransation = (event, value)=> {
-      setTypeTransaction(value.props.value);
+  const [typeBon, setTybeBon] = useState("bonAchat");
+  const changeBon = (event, value)=> {
+    setTybeBon(value.props.value);
   }
 
   const send = function(data) {
       console.log(data);
+      console.log(typeBon)
   }
 
   const header = [        
@@ -145,8 +146,6 @@ const App = function() {
 
             </div>
 
-
-
             <Modal
             open={openModal}
             onClose={handleClose}
@@ -161,30 +160,30 @@ const App = function() {
                     <TextField
                     select
                     label="Type de bon"
-                    // value={typeTransaction}
-                    // onChange={changeTransation}
+                    value={typeBon}
+                    onChange={changeBon}
                     sx={{width: "100%"}}
                     >
-                        <MenuItem key={"cib"} value={"cib"}>
+                        <MenuItem key={"bonAchat"} value={"bonAchat"}>
                         Bon d'Achat
                         </MenuItem>
-                        <MenuItem key={"bon"} value={"bon"}>
+                        <MenuItem key={"carteCadeau"} value={"carteCadeau"}>
                         Carte Cadeau
                         </MenuItem>
                     </TextField>
                 </div>
                     <CustomInput 
                         control={control} 
-                        label={"Numéro de Transaction"}
-                        name={"numeroTransaction"}
-                        error={errors?.numeroTransaction?.message}
+                        label={"Numéro du bon"}
+                        name={"numeroBon"}
+                        error={errors?.numeroBon?.message}
                         sx={{width: "100%"}}
                     />
                     <CustomInput 
                         control={control} 
-                        label={"Montant de la transaction"}
-                        name={"montant"}
-                        error={errors?.montant?.message}
+                        label={"Valeur"}
+                        name={"valeur"}
+                        error={errors?.valeur?.message}
                         sx={{width: "100%"}}
                         rules={{ 
                             pattern: {value:  /^(0|[1-9]\d*)(\.\d+)?$/, message: 'Veuillez entrer un chiffre seulement'}                                                      
@@ -192,15 +191,17 @@ const App = function() {
                             min: {value: 1,message: 'Le montant doit être supérieur à zéro'},
                         }}
                     />
-                    <LocalizationProvider dateAdapter={AdapterMoment}>
-                      <DesktopDatePicker
-                        label="Date d'Expiration"
-                        inputFormat="DD/MM/YYYY"
-                        // value={value}
-                        // onChange={handleChange}
-                        renderInput={(params) => <TextField {...params} />}
-                      />
-                    </LocalizationProvider>
+                    {typeBon==="carteCadeau" && 
+                      <LocalizationProvider dateAdapter={AdapterMoment}>
+                        <DesktopDatePicker
+                          label="Date d'Expiration"
+                          inputFormat="DD/MM/YYYY"
+                          // value={value}
+                          // onChange={handleChange}
+                          renderInput={(params) => <TextField {...params} />}
+                        />
+                      </LocalizationProvider>
+                    }
 
                     <Button color="primary" variant="contained" 
                     size="large" sx={ {marginTop: "20px"}} type="submit"
