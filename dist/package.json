@@ -13,7 +13,8 @@
     "@emotion/react": "^11.10.4",
     "@emotion/styled": "^11.10.4",
     "@mui/icons-material": "^5.10.9",
-    "@mui/material": "^5.10.10"
+    "@mui/material": "^5.10.10",
+    "react-hook-form": "^7.38.0"
   },
   "scripts": {
     "start": "react-scripts start",

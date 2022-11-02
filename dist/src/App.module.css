@@ -32,3 +32,10 @@
 }
 }
 
+
+.flexContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 10px;
+    margin-bottom: 10px;
+}

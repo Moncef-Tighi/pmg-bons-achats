@@ -3,7 +3,11 @@ import theme  from "./theme"
 import classes from './App.module.css'
 import TableCustom from "./Table/TableCustom"
 import TableHeadCustom from "./Table/TableHeadCustom"
-import { TableBody,TableRow, TableCell, Link } from "@mui/material"
+import { TableBody,TableRow, TableCell, Button } from "@mui/material"
+import AddIcon from '@mui/icons-material/Add';
+import { useState } from "react"
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 
 const bons = [
   {
@@ -52,6 +56,10 @@ const bons = [
 
 const App = function() {
 
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpen = () => setOpenModal(true);
+  const handleClose = () => setOpenModal(false);
+
   const header = [        
     { name: "Numéro du bon", sort: false},
     { name: "Valeur", sort: false},
@@ -59,7 +67,6 @@ const App = function() {
     { name: "Etat", sort: false},
     { name: "Date D'expiration", sort: false},
   ]
-  //const {url, handleChangePage,sortHandeler} = useTable(props.query);
 
   const handleChangePage = async (event, newPage) => {
       // let param=readURLObject(searchParams);
@@ -70,8 +77,74 @@ const App = function() {
 
     return (
         <ThemeProvider theme={theme}>
+            <Modal
+            open={openModal}
+            onClose={handleClose}
+            >
+            <Box className={classes.modalBox}>
+              <h1>Nouveau Bon</h1>
+              <form onSubmit={handleSubmit(send)} className={classes.form}>
+              <div style={{width: "75%"}}>
+                  <InputLabel htmlFor="input-with-label" sx={{marginBottom: "10px"}}>
+                      Sélectionner le type de bon
+                  </InputLabel>
+                  <TextField
+                  select
+                  label="Type de bon"
+                  // value={typeTransaction}
+                  // onChange={changeTransation}
+                  sx={{width: "100%"}}
+                  >
+                      <MenuItem key={"cib"} value={"cib"}>
+                      Bon d'Achat
+                      </MenuItem>
+                      <MenuItem key={"bon"} value={"bon"}>
+                      Carte Cadeau
+                      </MenuItem>
+                  </TextField>
+              </div>
+                  <CustomInput 
+                      control={control} 
+                      label={"Numéro de Transaction"}
+                      name={"numeroTransaction"}
+                      error={errors?.numeroTransaction?.message}
+                      sx={{width: "100%"}}
+                  />
+                  <CustomInput 
+                      control={control} 
+                      label={"Montant de la transaction"}
+                      name={"montant"}
+                      error={errors?.montant?.message}
+                      sx={{width: "100%"}}
+                      rules={{ 
+                          pattern: {value:  /^(0|[1-9]\d*)(\.\d+)?$/, message: 'Veuillez entrer un chiffre seulement'}                                                      
+                          ,required: { value: true, message: 'Ce champ est obligatoire'},
+                          min: {value: 1,message: 'Le montant doit être supérieur à zéro'},
+                      }}
+                  />
+                  <Button color="primary" variant="contained" 
+                  size="large" sx={ {marginTop: "20px"}} type="submit"
+                  >
+                      Confirmer
+                  </Button>
+            </form>
+          </Box>
+
+            </Modal>
+
             <div className={classes.container}>
-              <h1>Liste des Bons d'achats</h1>
+              <h1 style={{textAlign: "center"}}>Liste des Bons</h1>
+
+              <div className={classes.flexContainer}>
+                <Button variant="contained" 
+                      size="large"
+                      sx={{width: 200}}
+                      startIcon={<AddIcon />}
+                      // onClick={handleOpen}
+                      >
+                      Ajouter
+                </Button>
+              </div>
 
               <TableCustom
                 tableData={bons}
