@@ -14,6 +14,8 @@ import CustomInput from "./util/CustomInput";
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import Header from "./Components/Header"
+
 
 const bons = [
   {
@@ -98,7 +100,7 @@ const ListeBon = ()=> {
   
     return (
         <ThemeProvider theme={theme}>
-
+            <Header/>
             <div className={classes.container}>
             <h1 style={{textAlign: "center"}}>Liste des Bons</h1>
 

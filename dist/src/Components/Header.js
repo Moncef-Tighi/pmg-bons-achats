@@ -15,7 +15,7 @@ const Header = function() {
     return (<>
         <header>
             <div>
-                <img className={classes.icon} src="small-logo-pmg.png" alt="small-logo"></img>
+                <img className={classes.icon} src="logo-pmg.png" alt="small-logo"></img>
             </div>
 
             <div>
