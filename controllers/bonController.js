@@ -21,14 +21,28 @@ export const createBon = catchAsync(async (request, response,next)=> {
     const numeroBon = request.body.numeroBon;
     const valeur = request.body.valeur;
     const dateExpiration = request.body.dateExpiration;
-    console.log(dateExpiration)
+    const date = dateExpiration ? stringToDate(dateExpiration, "dd-MM-yyyy", "-") : null
     if (!type || !numeroBon || !valeur) return next(createError(400, "Une information obligatoire n'a pas été fournie"))
     if (type==="bonAchat" && dateExpiration) return next(createError(400, "Un bon d'achat ne peut pas avoir de date d'expiration"))
-    if (type==="carteCadeau" && stringToDate(dateExpiration, "dd-MM-yyyy", "-")<Date.now()) return next(createError(400, "Une carte cadeau ne peut pas être déjà expiré"))
-    // const validation = await model.insertionBon(numeroBon, valeur, type, dateExpiration);
+    if (type==="carteCadeau" && date<Date.now()) return next(createError(400, "Une carte cadeau ne peut pas être déjà expiré"))
+    const validation = await model.insertionBon(numeroBon, valeur, type, date);
     return response.status(201).json({
         status: "ok",
         message : "Le nouveau bon a bien été créé",
-        // body : validation
+        body : validation
     });
 });
+
+export const readListe = catchAsync(async (request, response,next)=> {
+
+    const page = request.query.page || 1
+
+    const data = await model.listeBon(page);
+    return response.status(200).json({
+        status: "ok",
+        totalSize : data.total[0]["COUNT(*)"],
+        body : data.rows
+    })
+
+
+})
