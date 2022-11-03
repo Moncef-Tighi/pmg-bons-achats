@@ -1,0 +1,30 @@
+{
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^6.0.0",
+    "http-errors": "^2.0.0",
+    "mysql2": "^2.3.3"
+  },
+  "name": "pmg-bons-achat",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "cross-env NODE_ENV=development node -r dotenv/config app.js dotenv_config_path=./config.env",
+    "prod": "cross-env NODE_ENV=production node -r dotenv/config app.js dotenv_config_path=./config.prod.env"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Moncef-Tighi/pmg-bons-achats.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Moncef-Tighi/pmg-bons-achats/issues"
+  },
+  "type": "module",
+  "homepage": "https://github.com/Moncef-Tighi/pmg-bons-achats#readme",
+  "description": ""
+}
