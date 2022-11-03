@@ -43,8 +43,7 @@ export const findEmploye = async function(id) {
 }
 
 export const employeLogin = async function(email) {
-    const sql = `SELECT id_employe, email, password, admin FROM employe WHERE email = ?
-    `
+    const sql = `SELECT id_employe, email, password, admin FROM employe WHERE email = ?`
     const [rows] = await db.query(sql, email)
     return rows[0];
 }

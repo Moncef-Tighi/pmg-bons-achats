@@ -49,6 +49,8 @@ export const AuthContextProvider = (props) => {
     }
 
     const loginHandeler = (token, employe)=> {
+        console.log(token);
+        console.log(employe);
         localStorage.setItem('token', token);
         localStorage.setItem('employe', JSON.stringify(employe));
         setInfoToConText(token, employe);

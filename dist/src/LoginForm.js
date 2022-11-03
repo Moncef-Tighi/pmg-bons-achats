@@ -29,13 +29,15 @@ const LoginForm = function() {
         if(password.value.trim()==="" || email.value.trim()==="") return setError("L'email et le mot de passe ne peuvent pas être vide");
 
         try {
-            const response = await axios.post(`${URL_API}/connexion`, {
+            const response = await axios.post(`${URL_API}/login`, {
                 email: email.value,
                 password: password.value
             })
+            console.log(response);
             setError("");
+            console.log(authContext)
             authContext.login(response.data.token, response.data.employe);
-            navigate("/article");
+            navigate("/liste");
         } catch(error) {
             console.log(error);
             if (error.response) {
