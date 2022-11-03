@@ -21,6 +21,7 @@ export const createBon = catchAsync(async (request, response,next)=> {
     const numeroBon = request.body.numeroBon;
     const valeur = request.body.valeur;
     const dateExpiration = request.body.dateExpiration;
+    console.log(dateExpiration);
     const date = dateExpiration ? stringToDate(dateExpiration, "dd-MM-yyyy", "-") : null
     if (!type || !numeroBon || !valeur) return next(createError(400, "Une information obligatoire n'a pas été fournie"))
     if (type==="bonAchat" && dateExpiration) return next(createError(400, "Un bon d'achat ne peut pas avoir de date d'expiration"))

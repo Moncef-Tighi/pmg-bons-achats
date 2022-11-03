@@ -3,7 +3,6 @@ import db from "../db.js";
 
 export const insertionBon = async (numero_bon, valeur, type, date_expiration=null)=> {
 
-    // const today = new Date(Date.now()).toISOString().slice(0, 19).replace('T', ' ');
     const etat = type==="bonAchat" ? "Non-Soldé" : "Valide"
     const sql = `INSERT INTO bon (numero_bon, valeur, type, date_expiration, etat, date_ajout) 
     VALUES (?, ?, ?,?, ?,SYSDATE()) `

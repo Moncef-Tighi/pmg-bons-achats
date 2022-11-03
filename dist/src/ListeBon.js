@@ -19,6 +19,7 @@ import { useSearchParams } from 'react-router-dom';
 import axios from "axios"
 import { URL_API } from "."
 import Notification from "./Components/Notification"
+import moment from "moment-jalaali"
 
 const readURLObject = function(searchParams) {
     let output={};
@@ -55,7 +56,7 @@ const ListeBon = ()=> {
                 numeroBon : data.numeroBon,
                 valeur : data.valeur,
                 type: typeBon,
-                dateExpiration: date?.toDate(),
+                dateExpiration: moment(date).format('DD-MM-YYYY'),
             })
             console.log(response);
             setMessage("Le bon a bien été créé");
@@ -142,7 +143,9 @@ const ListeBon = ()=> {
                             {bon.type}</TableCell>
                         <TableCell align="center" style={bon.etat==="Soldé" ? {color: "red"} : {color: "green"} } >
                             {bon.etat}</TableCell>
-                        <TableCell align="center" >{bon.date_expiration}</TableCell>
+                        <TableCell align="center" >
+                            {bon.date_expiration ? moment(bon.date_expiration).format('DD-MM-YYYY')
+                            : "/"}</TableCell>
                     </TableRow>)})}
                 </TableBody>
                 </TableCustom>
