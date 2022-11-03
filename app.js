@@ -17,7 +17,7 @@ app.disable('x-powered-by');
 app.use(express.json({
     limit : "100kb" //Limite la taille du body à 100kb
 }));
-app.use(express.urlencoded({extended: true}));
++app.use(express.urlencoded({extended: true}));
 
 // app.use('/plateforme/api/v1', apiRouter);
 app.use(express.static("./dist/build"));

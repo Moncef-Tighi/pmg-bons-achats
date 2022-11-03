@@ -36,8 +36,7 @@ export const createBon = catchAsync(async (request, response,next)=> {
 export const readListe = catchAsync(async (request, response,next)=> {
 
     const page = request.query.page || 1
-
-    const data = await model.listeBon(page);
+    const data = await model.listeBon(Number(page.split("=")[1]));
     return response.status(200).json({
         status: "ok",
         totalSize : data.total[0]["COUNT(*)"],

@@ -7,7 +7,7 @@ import { TableBody,TableRow, TableCell, Button, TextField } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MenuItem, InputLabel } from "@mui/material";
 import { useForm } from 'react-hook-form';
 import CustomInput from "./util/CustomInput";
@@ -15,52 +15,18 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import Header from "./Components/Header"
+import { useSearchParams } from 'react-router-dom';
+import axios from "axios"
+import { URL_API } from "."
 
+const readURL = function(searchParams) {
+    let output="";
+    for (const [key, value] of searchParams.entries()) {
+        output+=`&${key}=${value}`
+    }
+    return output;
+}
 
-const bons = [
-  {
-    numero : "0001",
-    valeur : 3000,
-    type : "Bon Achat",
-    etat: "Soldé",
-    dateExpiration : "/"
-  },
-  {
-    numero : "0002",
-    valeur : 300,
-    type : "Carte Cadeau",
-    etat: "Non-Soldé",
-    dateExpiration : "15/11/2022"
-  },
-  {
-    numero : "0003",
-    valeur : 20000,
-    type : "Bon Achat",
-    etat: "Non-Soldé",
-    dateExpiration : "/"
-  },
-  {
-    numero : "0004",
-    valeur : 500,
-    type : "Carte Cadeau",
-    etat: "Non-Soldé",
-    dateExpiration : "15/11/2022"
-  },
-  {
-    numero : "0006",
-    valeur : 1000,
-    type : "Bon Achat",
-    etat: "Soldé",
-    dateExpiration : "/"
-  },
-  {
-    numero : "0007",
-    valeur : 300,
-    type : "Carte Cadeau",
-    etat: "Non-Soldé",
-    dateExpiration : "16/11/2022"
-  },
-]
 
 
 const ListeBon = ()=> {
@@ -68,7 +34,11 @@ const ListeBon = ()=> {
     const [openModal, setOpenModal] = useState(false);
     const handleOpen = () => setOpenModal(true);
     const handleClose = () => setOpenModal(false);
-  
+
+    const [searchParams, setSearchParams] = useSearchParams({});
+    const [bons, setBons] = useState([]);
+    const [totalSize, setTotalSize] = useState(0);
+
     const { handleSubmit, control, formState: { errors } } = useForm();
     const [typeBon, setTybeBon] = useState("bonAchat");
     const [date, setDate] = useState(null)
@@ -83,6 +53,14 @@ const ListeBon = ()=> {
         console.log(date);
     }
   
+    useEffect(()=> {
+        (async () => {
+            const page = readURL(searchParams).page;
+            const response = await axios.get(`${URL_API}/bon?page=${searchParams}`);
+            setBons(response.data.body)
+            setTotalSize(response.data.totalSize);
+        })();
+    }, [searchParams])
     const header = [        
       { name: "Numéro du bon", sort: false},
       { name: "Valeur", sort: false},
@@ -115,9 +93,13 @@ const ListeBon = ()=> {
                 </Button>
             </div>
 
+            {bons.length===0 ? 
+                <div>Aucun bon n'a été trouvé</div>
+            :
+            
             <TableCustom
                 tableData={bons}
-                totalSize={bons.length}
+                totalSize={totalSize}
                 page={0}
                 handleChangePage={handleChangePage}
                 loading={false}
@@ -149,6 +131,9 @@ const ListeBon = ()=> {
                     </TableRow>)})}
                 </TableBody>
                 </TableCustom>
+
+            
+            }
 
             </div>
 
