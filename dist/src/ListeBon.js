@@ -18,6 +18,7 @@ import Header from "./Components/Header"
 import { useSearchParams } from 'react-router-dom';
 import axios from "axios"
 import { URL_API } from "."
+import Notification from "./Components/Notification"
 
 const readURLObject = function(searchParams) {
     let output={};
@@ -40,15 +41,31 @@ const ListeBon = ()=> {
     const { handleSubmit, control, formState: { errors } } = useForm();
     const [typeBon, setTybeBon] = useState("bonAchat");
     const [date, setDate] = useState(null)
+
+    const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
+
     const changeBon = (event, value)=> {
       setTybeBon(value.props.value);
     }
   
-    const send = function(data) {
-        console.log(data);
-        console.log(typeBon);
-        //Moment Object
-        console.log(date);
+    const send = async function(data) {
+        try {
+            const response = await axios.post(`${URL_API}/bon/creation`, {
+                numeroBon : data.numeroBon,
+                valeur : data.valeur,
+                type: typeBon,
+                dateExpiration: date?.toDate(),
+            })
+            console.log(response);
+            setMessage("Le bon a bien été créé");
+            setTimeout(()=> {setMessage("")}, 4000);
+            handleClose();  
+        } catch(error) {
+            setError("La création a échouée.");
+            setTimeout(()=> {setError("")}, 4000)    
+        }
+
     }
   
     useEffect(()=> {
@@ -58,7 +75,7 @@ const ListeBon = ()=> {
             setBons(response.data.body)
             setTotalSize(response.data.totalSize);
         })();
-    }, [searchParams])
+    }, [searchParams, message])
     const header = [        
       { name: "Numéro du bon", sort: false},
       { name: "Valeur", sort: false},
@@ -202,6 +219,8 @@ const ListeBon = ()=> {
             </Box>
 
             </Modal>
+        <Notification message={message} status={"success"} />
+        <Notification message={error}  />
         </ThemeProvider>
         )
   
