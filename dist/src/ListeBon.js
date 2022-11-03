@@ -19,15 +19,13 @@ import { useSearchParams } from 'react-router-dom';
 import axios from "axios"
 import { URL_API } from "."
 
-const readURL = function(searchParams) {
-    let output="";
+const readURLObject = function(searchParams) {
+    let output={};
     for (const [key, value] of searchParams.entries()) {
-        output+=`&${key}=${value}`
+        output[key]=value
     }
     return output;
 }
-
-
 
 const ListeBon = ()=> {
 
@@ -55,8 +53,8 @@ const ListeBon = ()=> {
   
     useEffect(()=> {
         (async () => {
-            const page = readURL(searchParams).page;
-            const response = await axios.get(`${URL_API}/bon?page=${searchParams}`);
+            const page = readURLObject(searchParams).page;
+            const response = await axios.get(`${URL_API}/bon?page=${page}`);
             setBons(response.data.body)
             setTotalSize(response.data.totalSize);
         })();
@@ -70,9 +68,9 @@ const ListeBon = ()=> {
     ]
   
     const handleChangePage = async (event, newPage) => {
-        // let param=readURLObject(searchParams);
-        // param["page"] = newPage;
-        // setSearchParams(param);
+        let param=readURLObject(searchParams);
+        param["page"] = newPage;
+        setSearchParams(param);
         return;
     };
   
@@ -100,7 +98,7 @@ const ListeBon = ()=> {
             <TableCustom
                 tableData={bons}
                 totalSize={totalSize}
-                page={0}
+                page={Number(readURLObject(searchParams).page)}
                 handleChangePage={handleChangePage}
                 loading={false}
                 sx={{
@@ -112,11 +110,11 @@ const ListeBon = ()=> {
                     {bons.map((bon) => {
                         return (
                         <TableRow
-                        key={bon.numero}
+                        key={bon.numero_bon}
                         >
                         <TableCell component="th" scope="row" align="center">
                             {/* Le link marche pas for some reason ? */}
-                            {bon.numero}
+                            {bon.numero_bon}
                         </TableCell>
 
                         <TableCell component="th" scope="row" align="center">
@@ -127,7 +125,7 @@ const ListeBon = ()=> {
                             {bon.type}</TableCell>
                         <TableCell align="center" style={bon.etat==="Soldé" ? {color: "red"} : {color: "green"} } >
                             {bon.etat}</TableCell>
-                        <TableCell align="center" >{bon.dateExpiration}</TableCell>
+                        <TableCell align="center" >{bon.date_expiration}</TableCell>
                     </TableRow>)})}
                 </TableBody>
                 </TableCustom>

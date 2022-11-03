@@ -14,9 +14,12 @@ export const insertionBon = async (numero_bon, valeur, type, date_expiration=nul
 export const listeBon = async(page=1)=> {
 
     const pageSize=5
+    let realPage = page
     const sql = `
-        SELECT * FROM bon limit ${(page-1)* pageSize+1}
-        , ${page* pageSize};
+        SELECT * FROM bon
+        ORDER BY date_ajout DESC
+        limit ${pageSize}
+        offset ${(realPage-1)* pageSize}
     `
     const [rows] = await db.query(sql)
     const [total] = await db.query("SELECT COUNT(*) FROM bon;")

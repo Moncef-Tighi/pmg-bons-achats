@@ -3,7 +3,6 @@ import { TablePagination } from "@mui/material"
 import { TablePaginationActions } from "./TablePaginationActions"
 
 const TableCustom = function(props) {
-
     return (
         <>        
             {!props.loading ? (<TableContainer component={Paper} sx={props.sx} className="shadow">
@@ -14,10 +13,10 @@ const TableCustom = function(props) {
                     <TableRow>
                         <TablePagination
                         count={props.totalSize}
-                        page={props.page - 1}
+                        page={isNaN(props.page) ? 0 : props.page - 1}
                         onPageChange={props.handleChangePage}
                         ActionsComponent={TablePaginationActions}
-                        rowsPerPage={50}
+                        rowsPerPage={5}
                         labelRowsPerPage=""
                         rowsPerPageOptions={[-1]}
                         />
