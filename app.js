@@ -7,6 +7,7 @@ import { errorHandeler } from "./controllers/errorController.js";
 // import apiRouter from './routes/Router.js';
 //import produitsRouter from './routes/articlesRouter.js';
 import authRouter from "./routes/authenticationRoute.js";
+import bonRouter from "./routes/bonRouter.js";
 
 const app = express();
 
@@ -20,7 +21,8 @@ app.use(express.urlencoded({extended: true}));
 
 // app.use('/plateforme/api/v1', apiRouter);
 app.use(express.static("./dist/build"));
-app.use("/api/login", authRouter)
+app.use("/api/login", authRouter);
+app.use("/api/bon", bonRouter);
 app.all('*', (request, response, next)=> {    
     //Ce middelware a pour seul but de catch les erreurs 404 
     return next(createError(404, `Erreur 404 : Impossible de trouver l'URL ${request.originalUrl} sur ce serveur`))
