@@ -8,7 +8,7 @@ import { useState } from 'react';
 import AddEmployes from './AddEmploye';
 import { useContext } from "react"
 import AuthContext from "../state/AuthContext"
-
+import AddIcon from '@mui/icons-material/Add';
 
 const Header = function() {
     const navigate= useNavigate();
@@ -16,7 +16,6 @@ const Header = function() {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const authContext = useContext(AuthContext);
-    console.log(authContext);
     const logoutHandeler = function() {
         navigate('/');
     };
@@ -30,7 +29,7 @@ const Header = function() {
             <div>
             {authContext.employe.admin===1 && 
                 <Tooltip title="Créer un employé" arrow>
-                    <IconButton onClick={handleOpen}><LogoutIcon sx={{fontSize: '1.3em', color: "black"}}/></IconButton>
+                    <IconButton onClick={handleOpen}><AddIcon sx={{fontSize: '1.3em', color: "black"}}/></IconButton>
                 </Tooltip>
             }
             <Tooltip title="Déconnexion" arrow>

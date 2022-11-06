@@ -33,9 +33,7 @@ const LoginForm = function() {
                 email: email.value,
                 password: password.value
             })
-            console.log(response);
             setError("");
-            console.log(authContext)
             authContext.login(response.data.token, response.data.employe);
             navigate("/liste");
         } catch(error) {
