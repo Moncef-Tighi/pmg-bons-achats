@@ -28,7 +28,7 @@ const AddEmployes = function({open, onClose}) {
 
         const {email ,password, permission}= event.currentTarget.elements
         try {
-            const response = await axios.post(`${URL_API}/employes/creation`, {
+            const response = await axios.post(`${URL_API}/login/inscription`, {
                 email: email.value,
                 admin: permission.value==="admin",
                 password: password.value
@@ -38,6 +38,7 @@ const AddEmployes = function({open, onClose}) {
                 }
             })
 
+            onClose();
             setNotif("Le nouvel employé a bien été créé");
         } catch(error) {
             console.log(error);
