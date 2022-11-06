@@ -56,9 +56,7 @@ export const connexion = catchAsync( async function(request, response, next) {
 export const AuthStrategy = async function(jwt_payload, done) {
     //C'est une fonction qui est utilisé par Passport pour vérifier les informations du JWT après avoir vérifié sa signature
     try {
-        console.log("ok");
         const employe = await model.oneEmploye(jwt_payload.employe_id);
-        console.log(employe);
         if (!employe) return done(null, false, `le token est invalide ou expiré`);
 
         return done(null, employe);

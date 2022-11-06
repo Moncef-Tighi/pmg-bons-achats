@@ -17,7 +17,6 @@ function stringToDate(_date,_format,_delimiter)
 
 
 export const createBon = catchAsync(async (request, response,next)=> {
-    console.log("ok");
     const type = request.body.type;
     const numeroBon = request.body.numeroBon;
     const valeur = request.body.valeur;
