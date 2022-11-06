@@ -1,14 +1,27 @@
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import classes from './AddEmployes.module.css'
+import classes from './AddEmploye.module.css'
 import { OutlinedInput, IconButton, InputAdornment, InputLabel, Button } from '@mui/material';
 import { useState } from 'react';
 import {Visibility, VisibilityOff} from '@mui/icons-material'
 import { NativeSelect } from "@mui/material";
 import { URL_API } from '../index.js';
+import { useContext } from "react"
+import AuthContext from "../state/AuthContext"
+import axios from 'axios';
+import OldNotification from './OldNotification';
 
 const AddEmployes = function({open, onClose}) {
     const [showPassword, setPasswordVisibility]=useState(false);
+    const authContext = useContext(AuthContext);
+    const [openNotif, setNotif] = useState("");
+    const [error, setError] = useState("");
+
+    const closeNotif = (event, reason) => {
+        setNotif("");
+        setError("");
+    };
+  
 
     const createEmploye =async  function(event) {
         event.preventDefault();
@@ -26,7 +39,6 @@ const AddEmployes = function({open, onClose}) {
             })
 
             setNotif("Le nouvel employé a bien été créé");
-            setOpen(false);
         } catch(error) {
             console.log(error);
             console.log(error.code);
@@ -55,16 +67,8 @@ const AddEmployes = function({open, onClose}) {
             <Box className={classes.modal}>
                     <h1>Ajouter un Employé</h1>
                     <form onSubmit={createEmploye}> 
-                        <InputLabel htmlFor="nom">Nom</InputLabel>
-                        <OutlinedInput id='nom' color='primary' size='small' fullWidth={true} required/>
-                        <InputLabel htmlFor="prenom">prenom</InputLabel>
-                        <OutlinedInput id='prenom' color='primary' size='small' fullWidth={true} required/>
                         <InputLabel htmlFor="email">E-Mail</InputLabel>
                         <OutlinedInput id='email' color='primary' size='small' fullWidth={true} required/>
-                        
-                        <InputLabel htmlFor="poste">Poste</InputLabel>
-                        <OutlinedInput id='poste' color='primary' size='small' fullWidth={true} required/>
-
                         <InputLabel htmlFor="password">Password</InputLabel>
                         <OutlinedInput
                         size='small'
@@ -89,8 +93,7 @@ const AddEmployes = function({open, onClose}) {
                             defaultValue={"modification"}
                             inputProps={{name: 'permission',id: 'permission',}}
                             >
-                                <option value={"modification"}>E-Commerce</option>
-                                <option value={"community"}>Community manager</option>
+                                <option value={"employe"}>Employé</option>
                                 <option value={"admin"}>Admin</option>
                         </NativeSelect>
 
@@ -109,10 +112,12 @@ const AddEmployes = function({open, onClose}) {
 
                     </div>
                 </form>
-                
+
             </Box>
         </Modal>
 
+        <OldNotification closeNotif={closeNotif} message={error} status="error"  />
+        <OldNotification closeNotif={closeNotif} message={openNotif} status="success"  />
         </>
         )
 }
