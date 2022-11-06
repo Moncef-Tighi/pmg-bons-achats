@@ -35,7 +35,6 @@ export const connexion = catchAsync( async function(request, response, next) {
     const password = request.body.password;
     if (!email | !password) return next(createError(400, `Email ou mot de passe introuvable`))
     const employe = await model.employeLogin(email);
-    console.log(employe)
     if (!employe) return next(createError(401, `Email incorrecte ou employé inexistant`));
     if (await compare(password, employe.password)) {
         const token = signJwt(employe)
@@ -57,9 +56,10 @@ export const connexion = catchAsync( async function(request, response, next) {
 export const AuthStrategy = async function(jwt_payload, done) {
     //C'est une fonction qui est utilisé par Passport pour vérifier les informations du JWT après avoir vérifié sa signature
     try {
-        
+        console.log("ok");
         const employe = await model.oneEmploye(jwt_payload.employe_id);
-        if (!employe || !employe.active) return done(null, false, `le token est invalide ou expiré`);
+        console.log(employe);
+        if (!employe) return done(null, false, `le token est invalide ou expiré`);
 
         return done(null, employe);
     } catch(error) {
@@ -67,7 +67,6 @@ export const AuthStrategy = async function(jwt_payload, done) {
     }
 
 };
-
 
 export const protect = passport.authenticate('jwt', {session: false});
 

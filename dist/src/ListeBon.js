@@ -20,6 +20,8 @@ import axios from "axios"
 import { URL_API } from "."
 import Notification from "./Components/Notification"
 import moment from "moment-jalaali"
+import { useContext } from "react"
+import AuthContext from "./state/AuthContext"
 
 const readURLObject = function(searchParams) {
     let output={};
@@ -46,6 +48,9 @@ const ListeBon = ()=> {
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
 
+    const authContext = useContext(AuthContext);
+
+
     const changeBon = (event, value)=> {
       setTybeBon(value.props.value);
     }
@@ -57,7 +62,9 @@ const ListeBon = ()=> {
                 valeur : data.valeur,
                 type: typeBon,
                 dateExpiration: moment(date).format('DD-MM-YYYY'),
-            })
+            },{headers : {
+                "Authorization" : `Bearer ${authContext.token}`
+            }})
             console.log(response);
             setMessage("Le bon a bien été créé");
             setTimeout(()=> {setMessage("")}, 4000);

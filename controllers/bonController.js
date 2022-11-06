@@ -17,14 +17,14 @@ function stringToDate(_date,_format,_delimiter)
 
 
 export const createBon = catchAsync(async (request, response,next)=> {
+    console.log("ok");
     const type = request.body.type;
     const numeroBon = request.body.numeroBon;
     const valeur = request.body.valeur;
-    const dateExpiration = request.body.dateExpiration;
-    console.log(dateExpiration);
+    let dateExpiration = request.body.dateExpiration;
     const date = dateExpiration ? stringToDate(dateExpiration, "dd-MM-yyyy", "-") : null
     if (!type || !numeroBon || !valeur) return next(createError(400, "Une information obligatoire n'a pas été fournie"))
-    if (type==="bonAchat" && dateExpiration) return next(createError(400, "Un bon d'achat ne peut pas avoir de date d'expiration"))
+    if (type==="bonAchat" && dateExpiration) dateExpiration= null
     if (type==="carteCadeau" && date<Date.now()) return next(createError(400, "Une carte cadeau ne peut pas être déjà expiré"))
     const validation = await model.insertionBon(numeroBon, valeur, type, date);
     return response.status(201).json({
