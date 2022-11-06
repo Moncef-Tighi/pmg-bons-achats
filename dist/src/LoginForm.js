@@ -37,7 +37,6 @@ const LoginForm = function() {
             authContext.login(response.data.token, response.data.employe);
             navigate("/liste");
         } catch(error) {
-            console.log(error);
             if (error.response) {
                 if (error.response.status===401) return setError(error.response.data.message);
                 return setError("Le serveur n'est pas accessible. Veuillez réessayer plus tard");
